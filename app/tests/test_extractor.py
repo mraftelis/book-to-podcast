@@ -1,5 +1,9 @@
-from app.extractor import extract_text_from_pdf
+import sys
 import os
+
+sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
+
+from app.extractor import extract_text_from_pdf
 
 def test_pdf_extraction():
     sample_path = "app/tests/sample.pdf"
