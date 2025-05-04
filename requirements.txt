@@ -1,7 +1,7 @@
 fastapi
 uvicorn
-python-multipart
-PyMuPDF
-pytest
+python-dotenv
 openai
+PyMuPDF
 gTTS
+requests
