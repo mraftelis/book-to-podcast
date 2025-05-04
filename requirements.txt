@@ -5,3 +5,4 @@ openai
 PyMuPDF
 gTTS
 requests
+python-multipart
