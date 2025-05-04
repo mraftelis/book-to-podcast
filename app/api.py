@@ -36,3 +36,5 @@ async def generate_podcast(file: UploadFile = File(...)):
     print(summary[:500])    
 
     return FileResponse(mp3_path, media_type="audio/mpeg", filename="summary.mp3")
+
+app.mount("/", StaticFiles(directory="app/static", html=True), name="static")

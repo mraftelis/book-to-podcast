@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Book to Podcast</title>
+</head>
+<body>
+  <h1>📚 Upload a Book to Generate a Podcast</h1>
+  <form id="uploadForm" enctype="multipart/form-data">
+    <input type="file" name="file" accept=".pdf" required>
+    <br><br>
+    <button type="submit">Generate Podcast</button>
+  </form>
+
+  <p id="status"></p>
+  <audio id="audioPlayer" controls style="display:none;"></audio>
+
+  <script>
+    const form = document.getElementById("uploadForm");
+    const status = document.getElementById("status");
+    const audioPlayer = document.getElementById("audioPlayer");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      status.innerText = "Processing... this may take a minute.";
+      audioPlayer.style.display = "none";
+
+      const formData = new FormData(form);
+      const response = await fetch("/generate-podcast", {
+        method: "POST",
+        body: formData
+      });
+
+      if (!response.ok) {
+        status.innerText = "Error: Unable to generate podcast.";
+        return;
+      }
+
+      const blob = await response.blob();
+      const url = URL.createObjectURL(blob);
+      audioPlayer.src = url;
+      audioPlayer.style.display = "block";
+      status.innerText = "✅ Podcast ready!";
+    });
+  </script>
+</body>
+</html>
