@@ -1,13 +1,24 @@
-from gtts import gTTS
+from openai import OpenAI
 import os
 
-def text_to_speech(text: str, language: str = 'en', save_path: str = "app/tests/summary_audio.mp3") -> str:
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+
+def text_to_speech(text: str, save_path: str = "output/summary.mp3") -> str:
     """
-    Convert text to speech using Google TTS and save as MP3.
+    Convert text to speech using OpenAI TTS (HD model) and save as MP3.
     Returns the path to the generated file.
     """
+    response = client.audio.speech.create(
+        model="tts-1-hd",
+        voice="nova",
+        input=text
+    )
+
+    # Ensure output directory exists
     os.makedirs(os.path.dirname(save_path), exist_ok=True)
-    tts = gTTS(text=text, lang=language)
-    tts.save(save_path)
-    print(f"Saving MP3 to: {save_path}")
+
+    with open(save_path, "wb") as f:
+        f.write(response.content)
+
+    print(f"✅ MP3 saved to: {save_path}")
     return save_path
